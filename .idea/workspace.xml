@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="bf5c6598-d76a-48e3-ad8f-ed1b2a016a7a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/kill_me.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/discrim_models/clickbait_classifierhead.pt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/discrim_models/sentiment_classifierhead.pt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/discrim_models/toxicity_classifierhead.pt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/gpt2tunediscrim.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/license.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pplm.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/__main__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/convert_gpt2_checkpoint_to_pytorch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/convert_openai_checkpoint_to_pytorch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/convert_tf_checkpoint_to_pytorch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/convert_transfo_xl_checkpoint_to_pytorch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/file_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/modeling.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/modeling_gpt2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/modeling_openai.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/modeling_transfo_xl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/modeling_transfo_xl_utilities.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/optimization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/optimization_openai.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/tokenization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/tokenization_gpt2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/tokenization_openai.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/pytorch_pretrained_bert/tokenization_transfo_xl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/setup_script.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/style_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/computers.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/fantasy.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/kitchen.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/legal.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/military.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/politics.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/positive_words.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/religion.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/science.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paper_code/wordlists/space.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pplm_classification_head.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run_pplm.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run_pplm_discrim_train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENCE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENCE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/convai_evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/convai_evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example_entry.py" beforeDir="false" afterPath="$PROJECT_DIR$/example_entry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interact.py" beforeDir="false" afterPath="$PROJECT_DIR$/interact.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_special_tokens.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_special_tokens.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/interact.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3306">
+              <caret line="197" column="9" lean-forward="true" selection-start-line="197" selection-start-column="9" selection-end-line="197" selection-end-column="9" />
+              <folding>
+                <element signature="e#202#216#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="103">
+              <caret line="57" selection-start-line="57" selection-end-line="59" selection-end-column="122" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run_pplm.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-162">
+              <caret line="825" column="41" lean-forward="true" selection-start-line="825" selection-start-column="41" selection-end-line="825" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>no_cuda</find>
+      <find>num_samples</find>
+      <find>top_k</find>
+      <find>full_te</find>
+      <find>SPECIAL_TOKENS</find>
+      <find>bag_of_words_old</find>
+      <find>discrim_old</find>
+      <find>class_label_old</find>
+      <find>horizon_length</find>
+      <find>grad_length</find>
+      <find>num_iterations</find>
+      <find>pert_gen_tok_texts</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/run_pplm.py" />
+        <option value="$PROJECT_DIR$/interact.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/kill_me.iml" />
+        <option value="$PROJECT_DIR$/.idea/misc.xml" />
+        <option value="$PROJECT_DIR$/.idea/modules.xml" />
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1346" />
+    <option name="height" value="464" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="kill_me" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kill_me" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bf5c6598-d76a-48e3-ad8f-ed1b2a016a7a" name="Default Changelist" comment="" />
+      <created>1583409391500</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1583409391500</updated>
+      <workItem from="1583409406188" duration="5808000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="5808000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="54" y="-8" width="1320" height="784" extended-state="6" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Python Console" />
+      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.32872504" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="SciView" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="103">
+          <caret line="57" selection-start-line="57" selection-end-line="59" selection-end-column="122" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_pplm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-162">
+          <caret line="825" column="41" lean-forward="true" selection-start-line="825" selection-start-column="41" selection-end-line="825" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/interact.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3306">
+          <caret line="197" column="9" lean-forward="true" selection-start-line="197" selection-start-column="9" selection-end-line="197" selection-end-column="9" />
+          <folding>
+            <element signature="e#202#216#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
