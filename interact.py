@@ -122,7 +122,7 @@ def run():
     device = "cuda" if torch.cuda.is_available() and not no_cuda else "cpu"
     if args.model_checkpoint == "":
         if args.model == 'gpt2':
-            raise ValueError("Interacting with GPT2 requires passing a finetuned model_checkpoint")
+            args.model_checkpoint = download_pretrained_model()
         else:
             args.model_checkpoint = download_pretrained_model()
 
@@ -145,6 +145,7 @@ def run():
     dataset = get_dataset(tokenizer, args.dataset_path, args.dataset_cache)
     personalities = [dialog["personality"] for dataset in dataset.values() for dialog in dataset]
     personality = random.choice(personalities)
+    print(personality)
     logger.info("Selected personality: %s", tokenizer.decode(chain(*personality)))
 
     history = []
@@ -167,13 +168,13 @@ def run():
             unpert_gen_tok_text, pert_gen_tok_texts, _, _ = full_text_generation(
                 model=model,
                 tokenizer=tokenizer,
-                context=context,
+                context=context + [speaker2],
                 device=device,
                 num_samples=1,
-                bag_of_words='military',
+                bag_of_words='science',
                 discrim=None,
                 class_label=-1,
-                length=100,
+                length=10,
                 stepsize=0.03,
                 temperature=1.0,
                 top_k=10,

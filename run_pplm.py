@@ -32,7 +32,6 @@ import torch
 import torch.nn.functional as F
 from torch.autograd import Variable
 from tqdm import trange
-from transformers import GPT2Tokenizer
 from transformers.file_utils import cached_path
 from transformers.modeling_gpt2 import GPT2LMHeadModel
 
@@ -137,6 +136,12 @@ def perturb_past(
         verbosity_level=REGULAR
 ):
     # Generate inital perturbed past
+    print(type(past))
+    try:
+        print(past.shape)
+    except:
+        print("No shape!")
+    print(past)
     grad_accumulator = [
         (np.zeros(p.shape).astype("float32"))
         for p in past
@@ -193,6 +198,9 @@ def perturb_past(
             for p_ in grad_accumulator
         ]
 
+        print(len(curr_perturbation))
+        print(curr_perturbation[0].grad)
+
         # Compute hidden using perturbed past
         perturbed_past = list(map(add, past, curr_perturbation))
         _, _, _, curr_length, _ = curr_perturbation[0].shape
@@ -210,6 +218,8 @@ def perturb_past(
         loss_list = []
         if loss_type == PPLM_BOW or loss_type == PPLM_BOW_DISCRIM:
             for one_hot_bow in one_hot_bows_vectors:
+                print(torch.t(one_hot_bow).shape)
+                print(probs.shape)
                 bow_logits = torch.mm(probs, torch.t(one_hot_bow))
                 bow_loss = -torch.log(torch.sum(bow_logits))
                 loss += bow_loss
@@ -267,8 +277,11 @@ def perturb_past(
             print(' pplm_loss', (loss - kl_loss).data.cpu().numpy())
 
         # compute gradients
+        loss = Variable(loss, requires_grad = True)
         loss.backward()
-
+        print("---------------------------------------------")
+        print(curr_perturbation[0].grad)
+        print("---------------------------------------------")
         # calculate gradient norms
         if grad_norms is not None and loss_type == PPLM_BOW:
             grad_norms = [
@@ -376,7 +389,7 @@ def get_bag_of_words_indices(bag_of_words_ids_or_paths: List[str], tokenizer) ->
         bow_indices.append(
             [tokenizer.encode(word.strip(),
                               add_prefix_space=True,
-                              add_special_tokens=False)
+                              add_special_tokens=True)
              for word in words])
     return bow_indices
 
@@ -390,7 +403,8 @@ def build_bows_one_hot_vectors(bow_indices, tokenizer, device='cuda'):
         single_bow = list(filter(lambda x: len(x) <= 1, single_bow))
         single_bow = torch.tensor(single_bow).to(device)
         num_words = single_bow.shape[0]
-        one_hot_bow = torch.zeros(num_words, tokenizer.vocab_size).to(device)
+        print(tokenizer.vocab_size)
+        one_hot_bow = torch.zeros(num_words, 40483).to(device)
         one_hot_bow.scatter_(1, single_bow, 1)
         one_hot_bows_vectors.append(one_hot_bow)
     return one_hot_bows_vectors
@@ -516,7 +530,7 @@ def generate_text_pplm(
         classifier=None,
         class_label=None,
         loss_type=0,
-        length=100,
+        length=10,
         stepsize=0.02,
         temperature=1.0,
         top_k=10,
@@ -552,6 +566,7 @@ def generate_text_pplm(
     else:
         range_func = range(length)
 
+    print(list(range_func))
     for i in range_func:
 
         # Get past/probs for current output, except for last word
@@ -673,273 +688,3 @@ def set_generic_model_params(discrim_weights, discrim_meta):
         meta = json.load(discrim_meta_file)
     meta['path'] = discrim_weights
     DISCRIMINATOR_MODELS_PARAMS['generic'] = meta
-
-
-def run_pplm_example(
-        pretrained_model="gpt2-medium",
-        cond_text="",
-        uncond=False,
-        num_samples_old=1,
-        bag_of_words_old=None,
-        discrim_old=None,
-        discrim_weights=None,
-        discrim_meta=None,
-        class_label_old=-1,
-        length_old=50,
-        stepsize_old=0.03,
-        temperature_old=1.0,
-        top_k_old=10,
-        sample_old=True,
-        num_iterations=3,
-        grad_length=10000,
-        horizon_length=1,
-        window_length=0,
-        decay=False,
-        gamma=1.5,
-        gm_scale=0.9,
-        kl_scale=0.01,
-        seed=0,
-        no_cuda=False,
-        colorama=False,
-        verbosity='regular'
-):
-    """    length=50,
-    stepsize=0.03,
-    sample=True,
-    num_iterations=3,
-    window_length=5,
-    gamma=1.5,
-    gm_scale=0.95,
-    kl_scale=0.01,
-    verbosity='regular'"""
-    # set Random seed
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-
-    # set verbosiry
-    verbosity_level = VERBOSITY_LEVELS.get(verbosity.lower(), REGULAR)
-
-    # set the device
-    device_old = "cuda" if torch.cuda.is_available() and not no_cuda else "cpu"
-
-    if discrim_old == 'generic':
-        set_generic_model_params(discrim_weights, discrim_meta)
-
-    if discrim_old is not None:
-        discriminator_pretrained_model = DISCRIMINATOR_MODELS_PARAMS[discrim_old][
-            "pretrained_model"
-        ]
-        if pretrained_model != discriminator_pretrained_model:
-            pretrained_model = discriminator_pretrained_model
-            if verbosity_level >= REGULAR:
-                print("discrim = {}, pretrained_model set "
-                "to discriminator's = {}".format(discrim_old, pretrained_model))
-
-    # load pretrained model
-    model_old = GPT2LMHeadModel.from_pretrained(
-        pretrained_model,
-        output_hidden_states=True
-    )
-    model_old.to(device_old)
-    model_old.eval()
-
-    # load tokenizer
-    tokenizer = GPT2Tokenizer.from_pretrained(pretrained_model)
-
-    # Freeze GPT-2 weights
-    for param in model_old.parameters():
-        param.requires_grad = False
-
-    # figure out conditioning text
-    if uncond:
-        tokenized_cond_text_old = tokenizer.encode(
-            [tokenizer.bos_token],
-            add_special_tokens=False
-        )
-    else:
-        raw_text = cond_text
-        while not raw_text:
-            print("Did you forget to add `--cond_text`? ")
-            raw_text = input("Model prompt >>> ")
-        tokenized_cond_text_old = tokenizer.encode(
-            tokenizer.bos_token + raw_text,
-            add_special_tokens=False
-        )
-
-    print("= Prefix of sentence =")
-    print(tokenizer.decode(tokenized_cond_text_old))
-    print()
-
-    # generate unperturbed and perturbed texts
-
-    # full_text_generation returns:
-    # unpert_gen_tok_text, pert_gen_tok_texts, discrim_losses, losses_in_time
-    unpert_gen_tok_text, pert_gen_tok_texts, _, _ = full_text_generation(
-        model=model_old,
-        tokenizer=tokenizer,
-        context=tokenized_cond_text_old,
-        device=device_old,
-        num_samples=num_samples_old,
-        bag_of_words=bag_of_words_old,
-        discrim=discrim_old,
-        class_label=class_label_old,
-        length=length_old,
-        stepsize=stepsize_old,
-        temperature=temperature_old,
-        top_k=top_k_old,
-        sample=sample_old,
-        num_iterations=num_iterations,
-        grad_length=grad_length,
-        horizon_length=horizon_length,
-        window_length=window_length,
-        decay=decay,
-        gamma=gamma,
-        gm_scale=gm_scale,
-        kl_scale=kl_scale,
-        verbosity_level=verbosity_level
-    )
-
-    # untokenize unperturbed text
-    unpert_gen_text = tokenizer.decode(unpert_gen_tok_text.tolist()[0])
-
-    if verbosity_level >= REGULAR:
-        print("=" * 80)
-    print("= Unperturbed generated text =")
-    print(unpert_gen_text)
-    print()
-
-    generated_texts = []
-
-    bow_word_ids = set()
-    if bag_of_words_old and colorama:
-        bow_indices = get_bag_of_words_indices(bag_of_words_old.split(";"),
-                                               tokenizer)
-        for single_bow_list in bow_indices:
-            # filtering all words in the list composed of more than 1 token
-            filtered = list(filter(lambda x: len(x) <= 1, single_bow_list))
-            # w[0] because we are sure w has only 1 item because previous fitler
-            bow_word_ids.update(w[0] for w in filtered)
-
-    # iterate through the perturbed texts
-    for i, pert_gen_tok_text in enumerate(pert_gen_tok_texts):
-        try:
-            # untokenize unperturbed text
-            if colorama:
-                import colorama
-
-                pert_gen_text = ''
-                for word_id in pert_gen_tok_text.tolist()[0]:
-                    if word_id in bow_word_ids:
-                        pert_gen_text += '{}{}{}'.format(
-                            colorama.Fore.RED,
-                            tokenizer.decode([word_id]),
-                            colorama.Style.RESET_ALL
-                        )
-                    else:
-                        pert_gen_text += tokenizer.decode([word_id])
-            else:
-                pert_gen_text = tokenizer.decode(pert_gen_tok_text.tolist()[0])
-
-            print("= Perturbed generated text {} =".format(i + 1))
-            print(pert_gen_text)
-            print()
-        except:
-            pass
-
-        # keep the prefix, perturbed seq, original seq for each index
-        generated_texts.append(
-            (tokenized_cond_text_old, pert_gen_tok_text, unpert_gen_tok_text)
-        )
-
-    return
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--pretrained_model",
-        "-M",
-        type=str,
-        default="gpt2-medium",
-        help="pretrained model name or path to local checkpoint",
-    )
-    parser.add_argument(
-        "--cond_text", type=str, default="The lake",
-        help="Prefix texts to condition on"
-    )
-    parser.add_argument(
-        "--uncond", action="store_true",
-        help="Generate from end-of-text as prefix"
-    )
-    parser.add_argument(
-        "--num_samples",
-        type=int,
-        default=1,
-        help="Number of samples to generate from the modified latents",
-    )
-    parser.add_argument(
-        "--bag_of_words",
-        "-B",
-        type=str,
-        default=None,
-        help="Bags of words used for PPLM-BoW. "
-             "Either a BOW id (see list in code) or a filepath. "
-             "Multiple BoWs separated by ;",
-    )
-    parser.add_argument(
-        "--discrim",
-        "-D",
-        type=str,
-        default=None,
-        choices=("clickbait", "sentiment", "toxicity", "generic"),
-        help="Discriminator to use",
-    )
-    parser.add_argument('--discrim_weights', type=str, default=None,
-                        help='Weights for the generic discriminator')
-    parser.add_argument('--discrim_meta', type=str, default=None,
-                        help='Meta information for the generic discriminator')
-    parser.add_argument(
-        "--class_label",
-        type=int,
-        default=-1,
-        help="Class label used for the discriminator",
-    )
-    parser.add_argument("--length", type=int, default=100)
-    parser.add_argument("--stepsize", type=float, default=0.02)
-    parser.add_argument("--temperature", type=float, default=1.0)
-    parser.add_argument("--top_k", type=int, default=10)
-    parser.add_argument(
-        "--sample", action="store_true",
-        help="Generate from end-of-text as prefix"
-    )
-    parser.add_argument("--num_iterations", type=int, default=3)
-    parser.add_argument("--grad_length", type=int, default=10000)
-    parser.add_argument(
-        "--window_length",
-        type=int,
-        default=0,
-        help="Length of past which is being optimized; "
-             "0 corresponds to infinite window length",
-    )
-    parser.add_argument(
-        "--horizon_length",
-        type=int,
-        default=1,
-        help="Length of future to optimize over",
-    )
-    parser.add_argument("--decay", action="store_true",
-                        help="whether to decay or not")
-    parser.add_argument("--gamma", type=float, default=1.5)
-    parser.add_argument("--gm_scale", type=float, default=0.9)
-    parser.add_argument("--kl_scale", type=float, default=0.01)
-    parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--no_cuda", action="store_true", help="no cuda")
-    parser.add_argument("--colorama", action="store_true",
-                        help="colors keywords")
-    parser.add_argument("--verbosity", type=str, default="very_verbose",
-                        choices=(
-                            "quiet", "regular", "verbose", "very_verbose"),
-                        help="verbosiry level")
-
-    args = parser.parse_args()
-    run_pplm_example(**vars(args))
