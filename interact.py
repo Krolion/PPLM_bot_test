@@ -135,7 +135,9 @@ def run():
     tokenizer_class, model_class = (GPT2Tokenizer, GPT2LMHeadModel) \
         if args.model == 'gpt2' else (OpenAIGPTTokenizer, OpenAIGPTLMHeadModel)
     tokenizer = tokenizer_class.from_pretrained(args.model_checkpoint)
-    model = model_class.from_pretrained(args.model_checkpoint)
+    model = model_class.from_pretrained(args.model_checkpoint, 
+                                        output_hidden_states=True,
+                                        output_past=True)
     model.to(args.device)
     add_special_tokens_(model, tokenizer)
 
@@ -159,11 +161,13 @@ def run():
             sequence = [[bos] + list(chain(*personality))] + history
             sequence = [sequence[0]] + [[speaker2 if (len(sequence) - i) % 2 else speaker1] + s for i, s in
                                         enumerate(sequence[1:])]
-            history_raw = tokenizer.decode(sequence)
+            print(history)
+            context = list(chain(*sequence))
+            print(context)
             unpert_gen_tok_text, pert_gen_tok_texts, _, _ = full_text_generation(
                 model=model,
                 tokenizer=tokenizer,
-                context=history_raw,
+                context=context,
                 device=device,
                 num_samples=1,
                 bag_of_words='military',
@@ -182,7 +186,7 @@ def run():
                 gamma=1.5,
                 gm_scale=0.95,
                 kl_scale=0.01,
-                verbosity_level='regular')
+                verbosity_level=1)
 
         unpert_gen_text = tokenizer.decode(unpert_gen_tok_text.tolist()[0])
         print("Unperturbed text:")
